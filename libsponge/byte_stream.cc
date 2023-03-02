@@ -35,13 +35,13 @@ size_t ByteStream::write(const string &data) {
 
 //! \param[in] len bytes will be copied from the output side of the buffer
 string ByteStream::peek_output(const size_t len) const {
-    size_t size = min(len, buffer_size());
+    const size_t size = min(len, buffer_size());
     return stream.substr(0, size);
 }
 
 //! \param[in] len bytes will be removed from the output side of the buffer
 void ByteStream::pop_output(const size_t len) {
-    size_t size = min(len, buffer_size());
+    const size_t size = min(len, buffer_size());
     stream.erase(0, size);
     _bytes_read += size;
 }
