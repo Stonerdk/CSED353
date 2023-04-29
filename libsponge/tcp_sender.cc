@@ -97,5 +97,6 @@ void TCPSender::send(TCPSegment& segment) {
     _next_seqno += segment.length_in_sequence_space();
     _segments_out.push(segment);
     outstandings.push(segment);
+    if (!is_tick) time_elapsed = 0;
     is_tick = true;
 }

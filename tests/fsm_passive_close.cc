@@ -35,11 +35,12 @@ int main() {
         {
             TCPTestHarness test_2 = TCPTestHarness::in_close_wait(cfg);
 
-            test_2.execute(Tick(4 * cfg.rt_timeout));
+            test_2.execute(Tick(3 * cfg.rt_timeout));
 
             test_2.execute(ExpectState{State::CLOSE_WAIT});
 
             test_2.execute(Close{});
+
             test_2.execute(Tick(1));
 
             test_2.execute(ExpectState{State::LAST_ACK});
