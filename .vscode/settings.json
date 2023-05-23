@@ -52,6 +52,8 @@
         "thread": "cpp",
         "cinttypes": "cpp",
         "typeinfo": "cpp",
-        "variant": "cpp"
-    }
+        "variant": "cpp",
+        "map": "cpp"
+    },
+    "C_Cpp.intelliSenseEngineFallback": "disabled"
 }

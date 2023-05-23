@@ -31,12 +31,21 @@ void Router::add_route(const uint32_t route_prefix,
 
     DUMMY_CODE(route_prefix, prefix_length, next_hop, interface_num);
     // Your code here.
+    uint32_t key = get_prefix(route_prefix, prefix_length);
+    routerTable[prefix_length][key] = make_pair(next_hop, interface_num);
 }
 
 //! \param[in] dgram The datagram to be routed
 void Router::route_one_datagram(InternetDatagram &dgram) {
-    DUMMY_CODE(dgram);
-    // Your code here.
+    if (dgram.header().ttl == 0 || (dgram.header().ttl -= 1) == 0) return;
+
+    uint32_t dst = dgram.header().dst;
+    for (auto& [p, m]: routerTable) {
+        uint32_t prefix = get_prefix(dst, p);
+        if (m.find(prefix) == m.end()) continue;
+        interface(m[prefix].second).send_datagram(dgram, m[prefix].first.value_or(Address::from_ipv4_numeric(dst)));
+        return;
+    }
 }
 
 void Router::route() {
@@ -48,4 +57,8 @@ void Router::route() {
             queue.pop();
         }
     }
+}
+
+uint32_t Router::get_prefix(uint32_t num, uint8_t prefix_length) {
+    return (prefix_length == 0u) ? 0u : (num >> (32u - prefix_length));
 }
