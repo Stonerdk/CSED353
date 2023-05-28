@@ -32,21 +32,15 @@ class TCPSender {
     //! the (absolute) sequence number for the next byte to be sent
     uint64_t _next_seqno{0};
 
-    bool is_syn = false;
-    bool is_fin = false;
-    bool is_tick = false;
-    
-    uint64_t ackno = 0;
-    uint64_t flight = 0;
-
-    uint32_t win = 1;
-    uint32_t time_elapsed = 0;
-    uint32_t rto = 0;
-    uint32_t r_cnt = 0;
-
-    std::queue<TCPSegment> outstandings {};
-
-    void send(TCPSegment& segment);
+    unsigned int rto{0};
+    uint64_t _bytes_in_flight{0};
+    bool fin{false};
+    std::queue<TCPSegment> outstanding_seg{};
+    bool timer_started{false};
+    unsigned int time{0};
+    unsigned int consecutive_retransmission{0};
+    uint16_t _window_size{0};
+    uint64_t absolute_ack{0};
 
   public:
     //! Initialize a TCPSender
